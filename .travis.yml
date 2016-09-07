@@ -12,5 +12,4 @@ install:
   - glide install
 
 script:
-  - go test $(glide novendor)
   - $HOME/gopath/bin/goveralls -service=travis-ci
