@@ -7,9 +7,12 @@ before_install:
   - go get golang.org/x/tools/cmd/cover
   - go get github.com/mattn/goveralls
   - go get -v github.com/Masterminds/glide
+  - go get github.com/modocache/gover
 
 install:
   - glide install
 
 script:
-  - $HOME/gopath/bin/goveralls -service=travis-ci
+  - go test $(glide novendor)
+  - gover
+  - $HOME/gopath/bin/goveralls -coverprofile=gover.coverprofile -service=travis-ci
