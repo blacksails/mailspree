@@ -2,6 +2,7 @@ package http
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/blacksails/mailspree"
@@ -15,8 +16,12 @@ type Server struct {
 
 func (s Server) mailHandler(w http.ResponseWriter, r *http.Request) {
 	var e mailspree.Email
-	json.NewDecoder(r.Body).Decode(&e)
-	json.NewEncoder(w).Encode(e)
+	err := json.NewDecoder(r.Body).Decode(&e)
+	if err != nil {
+		fmt.Fprint(w, err)
+	} else {
+		w.WriteHeader(http.StatusOK)
+	}
 }
 
 // ServeHTTP is the Server http.Handler implementation
