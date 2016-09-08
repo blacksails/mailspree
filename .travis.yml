@@ -4,15 +4,17 @@ go:
   1.7
 
 before_install:
+  - go get github.com/Masterminds/glide
   - go get golang.org/x/tools/cmd/cover
+  - go get github.com/go-playground/overalls
   - go get github.com/mattn/goveralls
-  - go get -v github.com/Masterminds/glide
-  - go get github.com/modocache/gover
 
 install:
   - glide install
 
 script:
   - go test $(glide novendor)
-  - gover
-  - $HOME/gopath/bin/goveralls -coverprofile=gover.coverprofile -service=travis-ci
+
+after_success:
+  - overalls -project=github.com/blacksails/mailspree -ignore=vendor,.git
+  - goveralls -coverprofile=overalls.coverprofile -service=travis-ci
