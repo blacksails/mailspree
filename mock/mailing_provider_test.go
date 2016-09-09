@@ -7,23 +7,27 @@ import (
 	"github.com/blacksails/mailspree/mock"
 )
 
-func TestSucceedingMailingProvider(t *testing.T) {
-	mp := mock.SucceedingMailingProvider{}
+func TestMailingProvider(t *testing.T) {
+	mp := mock.MailingProvider{}
 	e := mailspree.Email{}
 	err := mp.SendEmail(e)
 	if err != nil {
-		t.Error("this mailing provider should always succeed")
+		t.Error("the mock should be configured to never fail")
 	}
 	if len(mp.SentEmail) != 1 {
-		t.Error("after sending one mail the length of the SentEmail slice should be 1")
+		t.Error("there should now be one sent email in the mock")
 	}
 }
 
-func TestFailingMailingProvider(t *testing.T) {
-	mp := mock.FailingMailingProvider{}
+func TestMailingProviderFailure(t *testing.T) {
+	mp := mock.MailingProvider{}
 	e := mailspree.Email{}
+	mp.Fail = true
 	err := mp.SendEmail(e)
 	if err == nil {
-		t.Error("this mailing provider should always fail")
+		t.Error("the mock should be configured to always fail")
+	}
+	if len(mp.SentEmail) != 0 {
+		t.Error("there should not have been sent any email")
 	}
 }

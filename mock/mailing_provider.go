@@ -6,25 +6,20 @@ import (
 	"github.com/blacksails/mailspree"
 )
 
-// SucceedingMailingProvider is a mock implementation of
-// mailspree.MailingProvider, which simply appends sent email to a slice.
-type SucceedingMailingProvider struct {
+// MailingProvider is a mailing provider mock. It stores sent mail in a slice
+// so that we can check if it is called. It can be set to fail by setting the
+// Fail field to true.
+type MailingProvider struct {
 	SentEmail []mailspree.Email
+	Fail      bool
 }
 
-// SendEmail is the function that SucceedingMailingProvider implements to
-// satisfy the mailspree.MailingProvider interface.
-func (mp *SucceedingMailingProvider) SendEmail(e mailspree.Email) error {
+// SendEmail adds the email to a slice for later inspection. If the Fail field
+// is set, the email is not added, and we just fail.
+func (mp *MailingProvider) SendEmail(e mailspree.Email) error {
+	if mp.Fail {
+		return errors.New("The mailing provider failed sending the email")
+	}
 	mp.SentEmail = append(mp.SentEmail, e)
 	return nil
-}
-
-// FailingMailingProvider is a mock implementation of
-// mailspree.MailingProvider, which always returns an error.
-type FailingMailingProvider struct{}
-
-// SendEmail is the function that FailingMailingProvider implements to
-// satisfy the mailspree.MailingProvider interface.
-func (mp FailingMailingProvider) SendEmail(e mailspree.Email) error {
-	return errors.New("This mailing provider failed to send the email")
 }

@@ -9,9 +9,9 @@ import (
 
 func TestMailingProviders(t *testing.T) {
 	// Positive case
-	mp1 := mock.FailingMailingProvider{}
-	mp2 := &mock.SucceedingMailingProvider{}
-	mp3 := &mock.SucceedingMailingProvider{}
+	mp1 := &mock.MailingProvider{Fail: true}
+	mp2 := &mock.MailingProvider{}
+	mp3 := &mock.MailingProvider{}
 	mps := mailspree.MailingProviders{mp1, mp2, mp3}
 	err := mps.SendEmail(mailspree.Email{})
 	if err != nil {
