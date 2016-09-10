@@ -10,13 +10,13 @@ import (
 // so that we can check if it is called. It can be set to fail by setting the
 // Fail field to true.
 type MailingProvider struct {
-	SentEmail []mailspree.Email
+	SentEmail []mailspree.Message
 	Fail      bool
 }
 
 // SendEmail adds the email to a slice for later inspection. If the Fail field
 // is set, the email is not added, and we just fail.
-func (mp *MailingProvider) SendEmail(e mailspree.Email) error {
+func (mp *MailingProvider) SendEmail(e mailspree.Message) error {
 	if mp.Fail {
 		return errors.New("The mailing provider failed sending the email")
 	}

@@ -9,7 +9,7 @@ import (
 
 func TestMailingProvider(t *testing.T) {
 	mp := mock.MailingProvider{}
-	e := mailspree.Email{}
+	e := mailspree.Message{}
 	err := mp.SendEmail(e)
 	if err != nil {
 		t.Error("the mock should be configured to never fail")
@@ -21,7 +21,7 @@ func TestMailingProvider(t *testing.T) {
 
 func TestMailingProviderFailure(t *testing.T) {
 	mp := mock.MailingProvider{}
-	e := mailspree.Email{}
+	e := mailspree.Message{}
 	mp.Fail = true
 	err := mp.SendEmail(e)
 	if err == nil {
