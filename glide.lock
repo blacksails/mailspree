@@ -1,5 +1,5 @@
-hash: 90efe5af103f666c0977c88efcb921127a3f9247ef2278b125cb2e7cbd19f229
-updated: 2016-09-09T16:19:27.86369012+02:00
+hash: 5be3daf3f5198079e37d5293f16318b492197e1a5e33918bdb776c936bf94d1a
+updated: 2016-09-10T23:24:35.634836836+02:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: 7664702784775e51966f0885f5cd27435916517b
@@ -7,6 +7,12 @@ imports:
   version: 1ea25387ff6f684839d82767c1733ff4d4d15d0a
 - name: github.com/gorilla/mux
   version: 0eeaf8392f5b04950925b8a69fe70f110fa7cbfc
+- name: github.com/sendgrid/rest
+  version: d37acbf70185e33da36a233f4df95848b052427c
+- name: github.com/sendgrid/sendgrid-go
+  version: 011cae44b6c50aa21349daaef3a259cb375bd28c
+  subpackages:
+  - helpers/mail
 - name: gopkg.in/mailgun/mailgun-go.v1
   version: 369a1fa57ce6fb314e627087b9fff0db5c266c0f
 testImports: []

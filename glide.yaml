@@ -8,3 +8,7 @@ import:
   version: ^1.0.2
 - package: github.com/asaskevich/govalidator
   version: ^4.0.0
+- package: github.com/sendgrid/sendgrid-go
+  version: ^3.2.2
+- package: github.com/sendgrid/rest
+  version: ^2.2.0

@@ -3,31 +3,43 @@ package main
 import (
 	"log"
 	"os"
+	"strings"
 
 	"github.com/blacksails/mailspree"
 	"github.com/blacksails/mailspree/http"
 	"github.com/blacksails/mailspree/mailgun"
+	"github.com/blacksails/mailspree/sendgrid"
 )
 
 func main() {
 
-	mps := mailspree.MailingProviders{}
+	var mps mailspree.MailingProviders
 
 	// Mailgun configuration
-	d := os.Getenv("MAILGUN_DOMAIN")
-	key := os.Getenv("MAILGUN_APIKEY")
-	switch {
-	case d != "" && key != "":
-		mps = append(mps, mailgun.MailingProvider{
-			Domain: d,
-			APIKey: key,
-		})
-	case d == "" && key != "", d != "" && key == "":
-		log.Fatalln("When using the mailgun service, please set MAILGUN_DOMAIN and MAILGUN_APIKEY")
+	mgDomain := os.Getenv("MAILGUN_DOMAIN")
+	mgKey := os.Getenv("MAILGUN_APIKEY")
+	if mgDomain == "" || mgKey == "" {
+		log.Fatalln("Please provide a mailgun domain and api key")
 	}
+	mgProvider := mailgun.MailingProvider{Domain: mgDomain, APIKey: mgKey}
 
-	if len(mps) == 0 {
-		log.Fatalln("We need at least one mailing provider in order to run mailspree")
+	// Sendgrid configuration
+	sgKey := os.Getenv("SENDGRID_APIKEY")
+	if sgKey == "" {
+		log.Fatalln("Please provide a sendgrid api key")
+	}
+	sgProvider := sendgrid.MailingProvider{APIKey: sgKey}
+
+	// Priority configuration
+	prio := os.Getenv("PROVIDER_PRIORITY")
+
+	switch strings.ToLower(prio) {
+	case "sendgrid", "sg":
+		mps = append(mps, sgProvider, mgProvider)
+	case "mailgrid", "mg":
+		mps = append(mps, mgProvider, sgProvider)
+	default:
+		mps = append(mps, mgProvider, sgProvider)
 	}
 
 	err := http.ListenAndServe(":8080", http.NewServer(mps))
