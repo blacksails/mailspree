@@ -1,8 +1,10 @@
-hash: 5be3daf3f5198079e37d5293f16318b492197e1a5e33918bdb776c936bf94d1a
-updated: 2016-09-10T23:24:35.634836836+02:00
+hash: 18eec16e65c166437ffcd6628c76891079b710de7665799c1f83ce9e60431c4a
+updated: 2016-09-13T22:48:19.339253967+02:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: 7664702784775e51966f0885f5cd27435916517b
+- name: github.com/dgrijalva/jwt-go
+  version: d2709f9f1f31ebcda9651b03077758c1f3a0018c
 - name: github.com/gorilla/context
   version: 1ea25387ff6f684839d82767c1733ff4d4d15d0a
 - name: github.com/gorilla/mux
@@ -13,6 +15,10 @@ imports:
   version: 011cae44b6c50aa21349daaef3a259cb375bd28c
   subpackages:
   - helpers/mail
+- name: golang.org/x/crypto
+  version: 80b25ed484de142ae08d13ec3ce45de80093b801
+  subpackages:
+  - bcrypt
 - name: gopkg.in/mailgun/mailgun-go.v1
   version: 369a1fa57ce6fb314e627087b9fff0db5c266c0f
 testImports: []
