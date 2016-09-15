@@ -10,21 +10,18 @@ import (
 	"github.com/asaskevich/govalidator"
 )
 
-// JSONError represents a list of errors for the client
-type JSONError struct {
+type jsonError struct {
 	Errors []string `json:"errors"`
 }
 
-// NewJSONError returns a JSONError instantiated with the given strings as
-// errors.
-func NewJSONError(errs ...string) JSONError {
-	return JSONError{Errors: errs}
+func newJSONError(errs ...string) jsonError {
+	return jsonError{Errors: errs}
 }
 
 func respond(w http.ResponseWriter, status int, data interface{}) {
 	var buf bytes.Buffer
 	if err := json.NewEncoder(&buf).Encode(data); err != nil {
-		respond(w, http.StatusInternalServerError, NewJSONError("Internal server error"))
+		respond(w, http.StatusInternalServerError, newJSONError("Internal server error"))
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
@@ -42,15 +39,15 @@ func respondOK(w http.ResponseWriter, data interface{}) {
 }
 
 func respondBadRequest(w http.ResponseWriter) {
-	respond(w, http.StatusBadRequest, NewJSONError("Bad request"))
+	respond(w, http.StatusBadRequest, newJSONError("Bad request"))
 }
 
 func respondUnauthorized(w http.ResponseWriter) {
-	respond(w, http.StatusUnauthorized, NewJSONError("Unauthorized"))
+	respond(w, http.StatusUnauthorized, newJSONError("Unauthorized"))
 }
 
 func respondInternalServerError(w http.ResponseWriter) {
-	respond(w, http.StatusInternalServerError, NewJSONError("Internal server error"))
+	respond(w, http.StatusInternalServerError, newJSONError("Internal server error"))
 }
 
 func respondValidationErrors(w http.ResponseWriter, err error) {
@@ -64,5 +61,5 @@ func respondValidationErrors(w http.ResponseWriter, err error) {
 	for i := range errList {
 		errStrs[i] = errList[i].Error()
 	}
-	respond(w, http.StatusBadRequest, NewJSONError(errStrs...))
+	respond(w, http.StatusBadRequest, newJSONError(errStrs...))
 }

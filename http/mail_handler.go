@@ -26,7 +26,7 @@ func (s server) mailHandler() http.Handler {
 		// Send the email
 		if err := s.mailingProvider.SendEmail(m); err != nil {
 			// If it fails tell the client
-			respond(w, http.StatusServiceUnavailable, NewJSONError(err.Error()))
+			respond(w, http.StatusServiceUnavailable, newJSONError(err.Error()))
 			return
 		}
 		respondOK(w, nil)

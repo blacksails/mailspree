@@ -3,8 +3,21 @@ package http
 import (
 	"errors"
 	"net/http"
+	"os"
 	"strings"
+
+	"github.com/gorilla/handlers"
+	rscors "github.com/rs/cors"
 )
+
+type adapter func(http.Handler) http.Handler
+
+func adapt(h http.Handler, adapters ...adapter) http.Handler {
+	for i := len(adapters) - 1; i >= 0; i-- {
+		h = adapters[i](h)
+	}
+	return h
+}
 
 func (s server) ensureAuth() adapter {
 	return func(h http.Handler) http.Handler {
@@ -23,6 +36,18 @@ func (s server) ensureAuth() adapter {
 			// get the current user downstream.
 			h.ServeHTTP(w, r)
 		})
+	}
+}
+
+func cors() adapter {
+	return rscors.New(rscors.Options{
+		AllowedHeaders: []string{"Origin", "Accept", "Content-Type", "Authorization"},
+	}).Handler
+}
+
+func logging() adapter {
+	return func(h http.Handler) http.Handler {
+		return handlers.LoggingHandler(os.Stdout, h)
 	}
 }
 
