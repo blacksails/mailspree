@@ -1,3 +1,49 @@
+// The command mailspree starts a mailspree server. It is configured with the
+// following required env variables. See the mailspree-vars.env.example file
+// in the root directory for an example.
+//
+// Mailgun configuration
+//
+// The two following environement variables needs to be set, so that the
+// mailgun provider knows how to send mails. Both are required to start the
+// server.
+//
+//	MAILGUN_DOMAIN
+//	MAILGUN_APIKEY
+//
+// Sendgrid configuration
+//
+// The next environement variables needs to be set, so that the
+// sendgrid provider knows how to send mails. It is required.
+//
+//	SENDGRID_APIKEY
+//
+// Mailspree configuration
+//
+// The last three environment variables we need are the following.
+//
+//	MAILSPREE_USER
+//	MAILSPREE_PASS
+//	MAILSPREE_PK
+//
+// The first two are the username and password, used to login to the service.
+// The last one is the private key used to sign authentication tokens. All
+// three are required.
+//
+// Provider priority
+//
+// The environment variable PROVIDER_PRIORITY decides what mailing provider
+// gets first priority. In order to make mailspree use mailgun as the primary
+// provider, set the variable like this.
+//
+//	PROVIDER_PRIORITY=mg
+//
+// or
+//
+//	PROVIDER_PRIORITY=mailgun
+//
+// To make sendgrid the primary provider set it to 'sg' or 'sendgrid'. If it is
+// unset, mailspree defaults to using mailgun.
 package main
 
 import (
