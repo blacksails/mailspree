@@ -2,12 +2,6 @@ package mailspree
 
 import "errors"
 
-// UserService is a common interface for retrieving Users from usernames. This
-// will make it easy to swap out with a database.
-type UserService interface {
-	Find(string) (User, error)
-}
-
 // SimpleUserService only has a single user. A lookup for any other user will
 // return an error.
 type SimpleUserService struct {

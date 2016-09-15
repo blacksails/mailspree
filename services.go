@@ -7,3 +7,9 @@ type AuthService interface {
 	Authenticate(User, string) (string, error)
 	Validate(string, UserService) (User, error)
 }
+
+// UserService is a common interface for retrieving Users from usernames. This
+// will make it easy to swap out with a database.
+type UserService interface {
+	Find(string) (User, error)
+}
