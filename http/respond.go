@@ -27,6 +27,7 @@ func respond(w http.ResponseWriter, status int, data interface{}) {
 		respond(w, http.StatusInternalServerError, NewJSONError("Internal server error"))
 		return
 	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	if data == nil {
 		return
