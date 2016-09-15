@@ -2,9 +2,12 @@ package http
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/blacksails/mailspree"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	rscors "github.com/rs/cors"
 )
 
 // Server is a http.Handler which implements the mailspree service
@@ -25,7 +28,10 @@ func (s server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	router := mux.NewRouter()
 	router.Handle("/send", adapt(s.mailHandler(), s.ensureAuth())).Methods("POST")
 	router.Handle("/session", s.sessionHandler()).Methods("POST")
-	handler := adapt(router, jsonContentType())
+	handler := adapt(router,
+		logging(),
+		cors(),
+	)
 	handler.ServeHTTP(w, r)
 }
 
@@ -41,4 +47,16 @@ func adapt(h http.Handler, adapters ...adapter) http.Handler {
 		h = adapters[i](h)
 	}
 	return h
+}
+
+func cors() adapter {
+	return rscors.New(rscors.Options{
+		AllowedHeaders: []string{"Origin", "Accept", "Content-Type", "Authorization"},
+	}).Handler
+}
+
+func logging() adapter {
+	return func(h http.Handler) http.Handler {
+		return handlers.LoggingHandler(os.Stdout, h)
+	}
 }

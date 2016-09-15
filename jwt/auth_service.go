@@ -28,10 +28,10 @@ func (as AuthService) Authenticate(u mailspree.User, password string) (string, e
 // user is fetched and returned from the user service
 func (as AuthService) Validate(tokenStr string, us mailspree.UserService) (mailspree.User, error) {
 	var claims jwt.StandardClaims
-	token, _ := jwt.ParseWithClaims(tokenStr, &claims, func(token *jwt.Token) (interface{}, error) {
+	token, err := jwt.ParseWithClaims(tokenStr, &claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(as.PrivateKey), nil
 	})
-	if !token.Valid {
+	if err != nil || !token.Valid {
 		return mailspree.User{}, errors.New("Invalid token")
 	}
 	u, err := us.Find(claims.Subject)

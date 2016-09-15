@@ -1,5 +1,5 @@
-hash: 18eec16e65c166437ffcd6628c76891079b710de7665799c1f83ce9e60431c4a
-updated: 2016-09-13T22:48:19.339253967+02:00
+hash: cc7341e40ceb55764cae7fc969e1b9cfbb0ba511b90e5769cc224026c6473596
+updated: 2016-09-15T19:54:04.252679514+02:00
 imports:
 - name: github.com/asaskevich/govalidator
   version: 7664702784775e51966f0885f5cd27435916517b
@@ -7,8 +7,14 @@ imports:
   version: d2709f9f1f31ebcda9651b03077758c1f3a0018c
 - name: github.com/gorilla/context
   version: 1ea25387ff6f684839d82767c1733ff4d4d15d0a
+- name: github.com/gorilla/handlers
+  version: ee54c7b44cab12289237fb8631314790076e728b
 - name: github.com/gorilla/mux
   version: 0eeaf8392f5b04950925b8a69fe70f110fa7cbfc
+- name: github.com/rs/cors
+  version: a62a804a8a009876ca59105f7899938a1349f4b3
+- name: github.com/rs/xhandler
+  version: d9d9599b6aaf6a058cb7b1f48291ded2cbd13390
 - name: github.com/sendgrid/rest
   version: d37acbf70185e33da36a233f4df95848b052427c
 - name: github.com/sendgrid/sendgrid-go
@@ -16,9 +22,14 @@ imports:
   subpackages:
   - helpers/mail
 - name: golang.org/x/crypto
-  version: 80b25ed484de142ae08d13ec3ce45de80093b801
+  version: 81372b2fc2f10bef2a7f338da115c315a56b2726
   subpackages:
   - bcrypt
+  - blowfish
+- name: golang.org/x/net
+  version: de35ec43e7a9aabd6a9c54d2898220ea7e44de7d
+  subpackages:
+  - context
 - name: gopkg.in/mailgun/mailgun-go.v1
   version: 369a1fa57ce6fb314e627087b9fff0db5c266c0f
 testImports: []
