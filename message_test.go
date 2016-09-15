@@ -1,10 +1,11 @@
-package mailspree
+package mailspree_test
 
 import (
 	"fmt"
 	"testing"
 
 	"github.com/asaskevich/govalidator"
+	"github.com/blacksails/mailspree"
 )
 
 func TestEmailString(t *testing.T) {

@@ -3,6 +3,7 @@ package mailspree_test
 import (
 	"testing"
 
+	"github.com/blacksails/mailspree"
 	"github.com/blacksails/mailspree/mock"
 )
 
