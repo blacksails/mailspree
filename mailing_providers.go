@@ -5,11 +5,6 @@ import (
 	"log"
 )
 
-// MailingProvider abstacts different mailing providers.
-type MailingProvider interface {
-	SendEmail(Message) error
-}
-
 // MailingProviders is a list of MailingProvider implementations
 type MailingProviders []MailingProvider
 
