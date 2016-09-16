@@ -9,7 +9,7 @@ import (
 func NewCircuitBreaker(mp MailingProvider, t CircuitBreakerTimer) MailingProvider {
 	return circuitBreaker{
 		provider:            mp,
-		state:               circuitClosed,
+		state:               circuitBreakerClosed,
 		failures:            0,
 		failureLimit:        3,
 		circuitBreakerTimer: t,
@@ -47,23 +47,23 @@ func (t circuitBreakerTimer) Run() <-chan int {
 func (cb circuitBreaker) SendEmail(m Message) error {
 	var err error
 	switch cb.state {
-	case circuitClosed:
+	case circuitBreakerClosed:
 		err = cb.provider.SendEmail(m)
 		if err != nil {
 			cb.failures++
 			if cb.failures >= cb.failureLimit {
-				cb.switchState(circuitOpen)
+				cb.switchState(circuitBreakerOpen)
 			}
 		}
 		return err
-	case circuitOpen:
+	case circuitBreakerOpen:
 		return errors.New("Circuit breaker is open")
-	case circuitHalfOpen:
+	case circuitBreakerHalfOpen:
 		err = cb.provider.SendEmail(m)
 		if err != nil {
-			cb.switchState(circuitOpen)
+			cb.switchState(circuitBreakerOpen)
 		} else {
-			cb.switchState(circuitClosed)
+			cb.switchState(circuitBreakerClosed)
 		}
 		return err
 	}
@@ -73,20 +73,20 @@ func (cb circuitBreaker) SendEmail(m Message) error {
 type circuitBreakerState int
 
 const (
-	circuitClosed circuitBreakerState = iota
-	circuitOpen
-	circuitHalfOpen
+	circuitBreakerClosed circuitBreakerState = iota
+	circuitBreakerOpen
+	circuitBreakerHalfOpen
 )
 
 func (cb *circuitBreaker) switchState(s circuitBreakerState) {
 	switch s {
-	case circuitClosed:
+	case circuitBreakerClosed:
 		cb.failures = 0
-	case circuitOpen:
+	case circuitBreakerOpen:
 		c := cb.circuitBreakerTimer.Run()
 		go func() {
 			<-c
-			cb.switchState(circuitHalfOpen)
+			cb.switchState(circuitBreakerHalfOpen)
 		}()
 		cb.state = s
 	}
