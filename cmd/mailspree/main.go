@@ -89,6 +89,12 @@ func main() {
 		mps = append(mps, mgProvider, sgProvider)
 	}
 
+	// Wrap providers in circuit breakers
+	mpsWithCBs := make(mailspree.MailingProviders, len(mps))
+	for i, mp := range mps {
+		mpsWithCBs[i] = mailspree.NewCircuitBreaker(mp, mailspree.NewCircuitBreakerTimer())
+	}
+
 	// Mailspree user
 	msUser := os.Getenv("MAILSPREE_USER")
 	msPass := os.Getenv("MAILSPREE_PASS")
@@ -104,7 +110,7 @@ func main() {
 	}
 	as := jwt.AuthService{PrivateKey: msPK}
 
-	err := http.ListenAndServe(":8080", http.NewServer(mps, us, as))
+	err := http.ListenAndServe(":8080", http.NewServer(mpsWithCBs, us, as))
 	if err != nil {
 		log.Fatalln(err)
 	}

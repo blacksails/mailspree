@@ -26,13 +26,21 @@ type circuitBreaker struct {
 	circuitBreakerTimer CircuitBreakerTimer
 }
 
-// CircuitBreakerTimer is an interface to the timer used when the channel is open.
-// This is defined as an interface so that we can make a mock implementation
+// CircuitBreakerTimer is an interface to the timer used when the channel is
+// open. This is defined as an interface so that we can make a mock
+// implementation
 type CircuitBreakerTimer interface {
+	// Run starts a timer which returns an int when it runs out
 	Run() <-chan int
 }
 
 type circuitBreakerTimer struct{}
+
+// NewCircuitBreakerTimer returns a CircuitBreakerTimer which runs out after 30
+// seconds.
+func NewCircuitBreakerTimer() CircuitBreakerTimer {
+	return circuitBreakerTimer{}
+}
 
 func (t circuitBreakerTimer) Run() <-chan int {
 	c := make(chan int)
