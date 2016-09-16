@@ -1,11 +1,6 @@
 package mailspree
 
-// User is a system user which is used to log into mailspree.
-import (
-	"log"
-
-	"golang.org/x/crypto/bcrypt"
-)
+import "golang.org/x/crypto/bcrypt"
 
 // User represents a user of the mailspree system
 type User struct {
@@ -28,9 +23,6 @@ func (u User) CheckPassword(p string) bool {
 
 // SetPassword takes a cleartext password and sets the user password.
 func (u *User) SetPassword(p string) {
-	hash, err := bcrypt.GenerateFromPassword([]byte(p), bcrypt.DefaultCost)
-	if err != nil {
-		log.Fatalf("Error generating password hash")
-	}
+	hash, _ := bcrypt.GenerateFromPassword([]byte(p), bcrypt.DefaultCost)
 	u.PasswordHash = hash
 }
