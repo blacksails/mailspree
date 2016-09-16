@@ -7,7 +7,7 @@ import (
 
 // NewCircuitBreaker wraps a mailing provider with a circuit breaker.
 func NewCircuitBreaker(mp MailingProvider, t CircuitBreakerTimer) MailingProvider {
-	return circuitBreaker{
+	return &circuitBreaker{
 		provider:            mp,
 		state:               circuitBreakerClosed,
 		failures:            0,
@@ -16,6 +16,8 @@ func NewCircuitBreaker(mp MailingProvider, t CircuitBreakerTimer) MailingProvide
 	}
 }
 
+// CircuitBreaker is a wrapper for mailing provides which provides circuit
+// breaking functionality.
 type circuitBreaker struct {
 	provider            MailingProvider
 	state               circuitBreakerState
@@ -44,22 +46,23 @@ func (t circuitBreakerTimer) Run() <-chan int {
 
 // SendEmail tries to send the email with the mailing provider if the circuit
 // is open.
-func (cb circuitBreaker) SendEmail(m Message) error {
-	var err error
+func (cb *circuitBreaker) SendEmail(m Message) error {
 	switch cb.state {
 	case circuitBreakerClosed:
-		err = cb.provider.SendEmail(m)
+		err := cb.provider.SendEmail(m)
 		if err != nil {
 			cb.failures++
 			if cb.failures >= cb.failureLimit {
 				cb.switchState(circuitBreakerOpen)
 			}
+		} else {
+			cb.failures = 0
 		}
 		return err
 	case circuitBreakerOpen:
 		return errors.New("Circuit breaker is open")
 	case circuitBreakerHalfOpen:
-		err = cb.provider.SendEmail(m)
+		err := cb.provider.SendEmail(m)
 		if err != nil {
 			cb.switchState(circuitBreakerOpen)
 		} else {
@@ -67,7 +70,7 @@ func (cb circuitBreaker) SendEmail(m Message) error {
 		}
 		return err
 	}
-	return err
+	return nil // we never get here
 }
 
 type circuitBreakerState int

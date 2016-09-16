@@ -30,4 +30,7 @@ func TestMailingProviderFailure(t *testing.T) {
 	if len(mp.SentEmail) != 0 {
 		t.Error("there should not have been sent any email")
 	}
+	if len(mp.TriedToSend) != 1 {
+		t.Error("there should be one message which we tried to send")
+	}
 }
