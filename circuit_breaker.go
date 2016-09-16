@@ -6,33 +6,33 @@ import (
 )
 
 // NewCircuitBreaker wraps a mailing provider with a circuit breaker.
-func NewCircuitBreaker(mp MailingProvider, t OpenCircuitTimer) MailingProvider {
+func NewCircuitBreaker(mp MailingProvider, t CircuitBreakerTimer) MailingProvider {
 	return circuitBreaker{
-		provider:         mp,
-		state:            circuitClosed,
-		failures:         0,
-		failureLimit:     3,
-		openCircuitTimer: t,
+		provider:            mp,
+		state:               circuitClosed,
+		failures:            0,
+		failureLimit:        3,
+		circuitBreakerTimer: t,
 	}
 }
 
 type circuitBreaker struct {
-	provider         MailingProvider
-	state            circuitBreakerState
-	failures         int
-	failureLimit     int
-	openCircuitTimer OpenCircuitTimer
+	provider            MailingProvider
+	state               circuitBreakerState
+	failures            int
+	failureLimit        int
+	circuitBreakerTimer CircuitBreakerTimer
 }
 
-// OpenCircuitTimer is an interface to the timer used when the channel is open.
+// CircuitBreakerTimer is an interface to the timer used when the channel is open.
 // This is defined as an interface so that we can make a mock implementation
-type OpenCircuitTimer interface {
+type CircuitBreakerTimer interface {
 	Run() <-chan int
 }
 
-type openCircuitTimer struct{}
+type circuitBreakerTimer struct{}
 
-func (t openCircuitTimer) Run() <-chan int {
+func (t circuitBreakerTimer) Run() <-chan int {
 	c := make(chan int)
 	timer := time.NewTimer(time.Duration(30) * time.Second)
 	go func() {
@@ -83,7 +83,7 @@ func (cb *circuitBreaker) switchState(s circuitBreakerState) {
 	case circuitClosed:
 		cb.failures = 0
 	case circuitOpen:
-		c := cb.openCircuitTimer.Run()
+		c := cb.circuitBreakerTimer.Run()
 		go func() {
 			<-c
 			cb.switchState(circuitHalfOpen)
