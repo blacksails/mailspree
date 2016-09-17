@@ -10,10 +10,18 @@ sent as json objects.
 This endpoint is used to get an authentication token.
 
 #### /send POST
-| Param         | Type          | Required |
-| ------------- | ------------- | -------- |
-| username      | string        | true     |
-| password      | string        | true     |
+
+##### request
+| Param    | Type   | Required |
+| -------- | ------ | -------- |
+| username | string | true     |
+| password | string | true     |
+
+##### response
+| Param    | Type   | 
+| -------- | ------ |
+| username | string |
+| token    | string |
 
 ##### request example
 ```json
@@ -23,8 +31,10 @@ This endpoint is used to get an authentication token.
 }
 ```
 
-##### response
-| Param    | Type   | 
-| -------- | ------ |
-| username | string |
-| token    | string |
+##### response example
+```json
+{
+  "username": "admin",
+  "token": "letssaythisisatoken"
+}
+```
