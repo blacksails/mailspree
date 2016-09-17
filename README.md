@@ -17,6 +17,9 @@ exposed as a http api, with token authentication. It currently supports
 has a simple circuit breaker, which prevents a mail service from being used for
 some time, if it has been having problems.
 
+## HTTP API Reference
+The http api is documented in the [api reference](docs/api.md)
+
 ## Installation
 
 The easiest way to run the mailspree service is using docker. You can either
