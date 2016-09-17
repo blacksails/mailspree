@@ -9,7 +9,7 @@ service providers. It aims to be fault tolerant, failing over to another mail
 service provider if there was a problem with the one that tried to send the
 email.
 
-## Architeture
+## Architecture
 
 Mailspree is written in go which is great for writing services. Mailspree is
 exposed as a http api, with token authentication. It currently supports
