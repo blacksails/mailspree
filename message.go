@@ -4,8 +4,8 @@ import "bytes"
 
 // Message represents an email with all the related information.
 type Message struct {
-	From    Email   `json:"from"`
-	To      []Email `json:"to"`
+	From    Email   `json:"from" valid:"required"`
+	To      []Email `json:"to" valid:"required"`
 	Subject string  `json:"subject" valid:"required"`
 	Body    string  `json:"body" valid:"required"`
 }
