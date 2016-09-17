@@ -65,16 +65,16 @@ I was making this project with a set time, and there are certainly areas in the
 application that would be nice to improve. To read more about these, checkout
 the issues.
 
-## Acknowledgements
-I am new to the go eco system. I started looking into go during my summer
-holidays 2016. There might and most likely are pieces of the code that could be
-written more go idiomatic.
-
 ## Demo
 
 To see a demo of the project go to the
 [mailspree-ui](https://github.com/blacksails/mailspree-ui) project and follow
 the instructions.
+
+## Acknowledgements
+I am new to the go eco system. I started looking into go during my summer
+holidays 2016. There might and most likely are pieces of the code that could be
+written more go idiomatic.
 
 ## Credits
 
