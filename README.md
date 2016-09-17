@@ -67,3 +67,7 @@ the issues.
 To see a demo of the project go to the
 [mailspree-ui](https://github.com/blacksails/mailspree-ui) project and follow
 the instructions.
+
+## Credits
+
+Author: Benjamin Nørgaard ([blacksails](https://github.com/blacksails))
